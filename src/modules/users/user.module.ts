@@ -7,19 +7,20 @@ import { UserController } from './user.controller';
 import { User } from '../entities/user.entity';
 import { Role } from '../entities/role.entity';
 import { CognitoUserPool } from 'amazon-cognito-identity-js';
-// import { JwtModule } from '@nestjs/jwt';
-// import { JwtStrategy } from 'src/jwt/jwt.strategy';
+import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from '../jwt/jwt.strategy';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, Role]),
-    // JwtModule.register({
-    //   secret: process.env.JWT_SECRET,
-    //   signOptions: { expiresIn: '1h' },
-    // }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
+    }),
   ],
   controllers: [UserController],
   providers: [
     UserService,
+    JwtStrategy,
     {
       provide: CognitoUserPool,
       useFactory: () => {
@@ -31,6 +32,6 @@ import { CognitoUserPool } from 'amazon-cognito-identity-js';
       },
     },
   ],
-  exports: [UserService],
+  exports: [UserService, JwtStrategy],
 })
 export class UserModule {}
