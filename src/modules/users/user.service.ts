@@ -109,13 +109,13 @@ export class UserService {
 
   async refreshToken(refreshToken: string): Promise<any> {
     try {
-      // Verifica se o refresh token é válido
+      // verifica se o refresh token é válido
       const decoded = this.jwtService.verify(refreshToken);
 
-      // Gerar um novo Access Token
+      // gerar um novo Access Token
       const newAccessToken = this.jwtService.sign(
         { sub: decoded.sub },
-        { expiresIn: '1d' }, // Expira em 1 dia
+        { expiresIn: '1d' },
       );
 
       return { accessToken: newAccessToken };
@@ -288,10 +288,10 @@ export class UserService {
       cognitoUser.confirmPassword(code, newPassword, {
         onSuccess: async () => {
           try {
-            // Atualiza a senha no banco de dados
+            // atualiza a senha no banco de dados
             await this.userRepository.update(
               { email },
-              { password: newPassword }, // Idealmente, deve ser criptografada
+              { password: newPassword },
             );
 
             resolve({

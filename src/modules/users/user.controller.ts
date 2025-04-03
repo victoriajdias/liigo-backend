@@ -28,11 +28,6 @@ export class UserController {
     return loginResult;
   }
 
-  @Post('refresh')
-  async refresh(@Body('refreshToken') refreshToken: string) {
-    return this.userService.refreshToken(refreshToken);
-  }
-
   @Post('register')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async signUp(@Body() signUpDto: UserDto) {
@@ -71,6 +66,11 @@ export class UserController {
   async createRole(@Body() createRoleDto: CreateRoleDto): Promise<Role> {
     const { name } = createRoleDto;
     return this.userService.createRole(name);
+  }
+
+  @Post('refresh')
+  async refresh(@Body('refreshToken') refreshToken: string) {
+    return this.userService.refreshToken(refreshToken);
   }
 
   @Get()
